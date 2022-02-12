@@ -1,0 +1,164 @@
+package com.Shrutik;
+/* Creating an Integer array */
+
+public class IntArray implements Iterable<Integer> {
+    
+    public static final int DEFAULT_CONST = 1 << 3;
+
+    public int[] arr;
+    public int len;
+    private int capacity;
+
+    // Implement an array with default capacity
+    public IntArray(){
+        this(DEFAULT_CONST);
+    }
+
+    // Implement an array with some capacity
+    public IntArray(int capacity){
+        if(capacity<0) throw new IllegalArgumentException("Illegal capacity:" + capacity);
+        this.capacity = capacity;
+        arr = new int[capacity];
+    }
+
+    // Implement a dynamic array using given array
+    public IntArray(int[] array){
+        if(arr == null) throw new IllegalArgumentException("Array cannot be null");
+        arr = java.util.Arrays.copyOf(array,array.length);
+        capacity = len =  array.length;
+    }
+
+    public int size(){
+        return len;
+    }
+
+    // write a boolean isEmpty which will return true if it is otherwise it will return false
+    public boolean isEmpty(){
+        return len == 0;
+    }
+
+    // write getters and setters
+    public int get(int index){
+        return arr[index];
+    }
+
+    public void set(int index , int elem){
+        arr[index] = elem;
+    }
+
+    // add an element into the array
+    public void add(int elem){
+        if(len+1>=capacity){
+            if(capacity==0) capacity = 1;
+            capacity *= 2;
+            arr = java.util.Arrays.copyOf(arr,capacity);
+        }
+        arr[len++] = elem;
+    }
+
+    // remove elem from the array
+    public boolean remove(int elem){
+        if(contains(elem)){
+        for(int x=0 ; x<=len ; x++){
+            if(arr[x]==elem){
+                removeAt(x);
+                return true;
+            }
+            }}
+        else
+            throw new IllegalArgumentException("Element not found");
+            return false;
+    }
+
+    public void removeAt(int index){
+        System.arraycopy(arr, index+1, arr, index, len-index-1 );
+
+        len--;
+        capacity--;
+    }
+
+    public boolean contains(int elem){
+        for(int x=0 ; x<=len ; x++){
+            if(arr[x]==elem){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void reverse() {
+        for (int i = 0; i < len / 2; i++) {
+            int temp = arr[i];
+            arr[i] = arr[len - 1 - i];
+            arr[len - 1 - i] = temp;
+        }
+    }
+
+    public int binarySearch(int elem){
+            int n = java.util.Arrays.binarySearch(arr,0,len,elem);
+            return n;
+        }
+
+    public void sort(){
+        java.util.Arrays.sort(arr,0,len);
+    }
+
+    public java.util.Iterator<Integer> iterator(){
+        return new java.util.Iterator<Integer>() {
+
+            int index = 0;
+            @Override
+            public boolean hasNext() {
+                return index<len;
+            }
+
+            @Override
+            public Integer next() {
+                return arr[index++];
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+        };
+    }
+
+
+
+    public String toString(){
+        if(arr==null) return "[]";
+        else{
+            StringBuilder sb = new StringBuilder(len).append("[");
+
+        for(int i=0 ; i<len-1 ; i++) {
+            sb.append(arr[i] + ",");
+        }
+            return sb.append(arr[len-1] + "]").toString();
+        }
+    }
+
+    public static void main(String[] args) {
+        IntArray arr = new IntArray(50);
+        // Following are some operations performed on our IntArray 
+
+        arr.add(10);
+        arr.add(-19);
+        arr.add(54);
+        arr.add(8);
+        arr.add(24);
+        arr.add(-36);
+        System.out.println("our original array: " + arr);
+
+        arr.sort();
+        System.out.println("Sorted Array: " + arr);
+
+        int e = arr.binarySearch(24);
+        System.out.println("Element 24 is at index: " + e);
+
+        arr.remove(-19);
+        System.out.println("Removed element -19, " +"current array is: " + arr);
+
+    }
+
+}
